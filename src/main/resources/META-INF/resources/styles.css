@@ -1,0 +1,52 @@
+/* Hover pointer untuk seluruh kontrol interaktif */
+vaadin-button, vaadin-menu-bar-item, vaadin-menu-bar-button, vaadin-context-menu-item,
+vaadin-tab, vaadin-drawer-toggle, vaadin-upload-button, vaadin-side-nav-item,
+vaadin-grid-sorter, vaadin-select, vaadin-combo-box, a, a[href] {
+  cursor: pointer;
+}
+vaadin-button[disabled], vaadin-menu-bar-button[disabled], vaadin-upload-button[disabled] {
+  cursor: not-allowed;
+}
+
+/* Indikator loading global */
+.v-loading-indicator {
+  height: 4px;
+  background: linear-gradient(90deg, #2563EB, #60a5fa, #2563EB);
+  box-shadow: 0 0 8px #2563EB, 0 0 4px #60a5fa;
+}
+
+/* Modal: header primer, footer abu-abu, tombol di kanan */
+vaadin-dialog-overlay::part(header) {
+  background-color: #2563EB;
+  color: #ffffff;
+}
+vaadin-dialog-overlay::part(title) {
+  color: #ffffff;
+}
+vaadin-dialog-overlay::part(footer) {
+  background-color: #F3F4F6;
+  border-top: 1px solid #d1d5db;
+  justify-content: flex-end;
+}
+
+/* Kartu halaman & ringkasan */
+.page-card {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem;
+  min-width: 12rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #ffffff;
+}
+.summary-card .caption { font-size: 0.875rem; color: #4b5563; }
+.summary-card .value { font-size: 1.25rem; font-weight: 600; color: #111827; }
+.amount-income { color: #166534; font-weight: 600; }
+.amount-expense { color: #b91c1c; font-weight: 600; }
