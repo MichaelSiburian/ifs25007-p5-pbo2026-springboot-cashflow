@@ -6,6 +6,7 @@ import org.delcom.ifs25007springbootcashflow.domain.exception.DomainException;
 import org.delcom.ifs25007springbootcashflow.domain.repository.IUserRepository;
 import org.delcom.ifs25007springbootcashflow.framework.auth.AuthSession;
 import org.delcom.ifs25007springbootcashflow.usecase.AuthUseCase;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -47,10 +48,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         H1 title = new H1("Masuk ke Cashflow");
         title.getStyle().set("font-size", "1.5rem").set("margin", "0 0 0.5rem 0");
 
-        username.setId("login-username");
+        exposeInputId(username, "login-username");
         username.setWidthFull();
         username.setAutofocus(true);
-        password.setId("login-password");
+        exposeInputId(password, "login-password");
         password.setWidthFull();
 
         progress.setIndeterminate(true);
@@ -67,6 +68,36 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         card.add(title, username, password, progress, login,
                 new RouterLink("Belum punya akun? Daftar", RegisterView.class));
         add(card);
+    }
+
+    /**
+     * Memberi ID pada elemen {@code <input>} sebenarnya (bukan elemen host web component),
+     * agar selector #login-username / #login-password menunjuk ke input yang bisa diisi.
+     */
+    private static void exposeInputId(Component field, String id) {
+        field.getElement().executeJs("""
+                const host = this;
+                const apply = () => {
+                    const input = host.querySelector('input');
+                    if (!input) {
+                        return false;
+                    }
+                    input.id = $0;
+                    const label = host.querySelector('label[slot="label"]');
+                    if (label) {
+                        label.setAttribute('for', $0);
+                    }
+                    return true;
+                };
+                if (!apply()) {
+                    const observer = new MutationObserver(() => {
+                        if (apply()) {
+                            observer.disconnect();
+                        }
+                    });
+                    observer.observe(host, { childList: true, subtree: true });
+                }
+                """, id);
     }
 
     private void submit() {
